@@ -23,5 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # Firestore keys
-!notes.md
-!api.js
+notes.md
+api.js
