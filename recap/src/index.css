@@ -1,6 +1,6 @@
 body {
   max-width: 1000px;
-  margin: auto;
+  margin: auto !important;
 }
 
 div {
@@ -28,7 +28,7 @@ div {
 
 /* Glance */
 #glance {
-  border: 1px solid red !important;
+  border: 1px solid grey !important;
   display: flex;
   justify-content: space-between;
 }
