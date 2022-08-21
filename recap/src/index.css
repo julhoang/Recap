@@ -1,0 +1,58 @@
+body {
+  max-width: 1000px;
+  margin: auto;
+}
+
+div {
+  margin: 1.5rem 0rem;
+}
+
+/*  
+    1.  Search Bar
+    2.  Header
+    3.  Glance
+    4.  Progress
+    5.  Read
+*/
+
+/* Search Bar */
+.search-bar {
+  max-width: 50%;
+}
+
+/* Header */
+#header {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Glance */
+#glance {
+  border: 1px solid red !important;
+  display: flex;
+  justify-content: space-between;
+}
+
+.progress-bar {
+  color: blue;
+}
+
+#glance-title {
+  font-style: italic;
+}
+
+.col {
+  /* border: 1px solid green; */
+  padding: 2rem;
+}
+
+#review-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Database */
+.header-badge {
+  font-size: 1.3rem;
+  vertical-align: middle;
+}
