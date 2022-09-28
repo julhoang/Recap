@@ -1,35 +1,42 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { db } from "../firebase-config";
+import { db, booksCollectionRef } from "../firebase-config";
 import { collection, getDocs } from "firebase/firestore";
+import Emoji from "./Emoji";
 
-export default function Content() {
-  const [books, setBooks] = useState([]);
-  const booksCollectionRef = collection(db, "books");
+export default function Content({ data, api }) {
+  const [book, setBook] = useState(data);
+  const [quotes, setQuotes] = useState([]);
+
+  const Quotes = () => {
+    return (
+      <div id="quotes-section">
+        {quotes.map((quote) => {
+          return (
+            <div className="quotes">
+              <Emoji symbol="💡" /> <span>"{quote}"</span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+  const loadQuotes = async () => {
+    try {
+      setQuotes(book.quotes);
+      quotes.map((quote) => {});
+    } catch (err) {
+      console.log("book still loading");
+    }
+  };
 
   useEffect(() => {
-    const getBooks = async () => {
-      const data = await getDocs(booksCollectionRef);
-      setBooks(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
+    setBook(data);
+  });
 
-    getBooks();
-  }, []);
+  useEffect(() => {
+    loadQuotes();
+  }, [book]);
 
-  return (
-    <div>
-      <h1>Hello </h1>
-      <p>Start Content</p>
-
-      {books.map((book) => {
-        return (
-          <div>
-            <h1>Title: {book.title}</h1>
-            <h2>Author: {book.author}</h2>
-            <p>Rating: {book.rating}</p>
-          </div>
-        );
-      })}
-    </div>
-  );
+  return <Quotes />;
 }

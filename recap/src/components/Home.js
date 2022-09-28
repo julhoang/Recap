@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase-config";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 import SearchBar from "../components/SearchBar";
 import Header from "../components/Header";
@@ -38,32 +38,28 @@ export default function Home() {
   };
 
   useEffect(() => {
-    console.log("from useEffects!");
     getBooks();
   }, []);
 
   // receive change notification from the "Add New Book button" from <Header/>
   const onChangeDB = () => {
-    console.log("from onChange");
     getBooks();
   };
 
   return (
     <div className="home">
-      <SearchBar />
-
+      {/* TODO: implement search bar */}
+      {/* <SearchBar />  */}
       <Header onChangeDB={onChangeDB} />
-
       <div class="row justify-content-center" id="glance">
         <div class="col">
-          <Goal onChangeDB={onChangeDB} books={progress} />
+          <Goal onChangeDB={onChangeDB} completed={completed} progress={progress} />
         </div>
 
         <div class="col">
           <Review onChangeDB={onChangeDB} books={completed} />
         </div>
       </div>
-
       <Database progress={progress} completed={completed} />
     </div>
   );

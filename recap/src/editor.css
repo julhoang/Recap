@@ -1,4 +1,33 @@
+#editor-main {
+  padding: 0rem 2rem;
+  max-width: 1000px;
+  margin: auto;
+}
 #editor-navbar {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+}
+
+.card-link,
+.col a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.quotes {
+  background: rgb(189, 253, 205);
+  padding: 1rem;
+}
+
+#tagify-div div {
+  margin: 0;
+  display: inline;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 20px;
+  max-width: 200px;
 }

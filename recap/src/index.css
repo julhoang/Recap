@@ -20,6 +20,17 @@ div {
   max-width: 50%;
 }
 
+/* Banner */
+#banner {
+  background-color: rgb(139, 210, 238);
+  position: static;
+  height: 2rem;
+  margin: 0 !important;
+  text-align: center;
+  padding: 2px;
+  font-size: 1.2rem;
+}
+
 /* Header */
 #header {
   display: flex;

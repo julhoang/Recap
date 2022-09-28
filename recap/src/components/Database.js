@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 import Badge from "react-bootstrap/Badge";
 import Card from "react-bootstrap/Card";
@@ -17,20 +18,23 @@ const Cards = (props) => {
   }
 
   let message = "";
+
   try {
     message = data.map((book) => (
       <Col>
-        <Card>
-          {/* <Card.Img variant="top" src="holder.js/100px160" /> */}
-          <Card.Body>
-            <Card.Title>{book.title}</Card.Title>
-            <Card.Text>{book.author}</Card.Text>
-          </Card.Body>
-        </Card>
+        <NavLink to={"/editor?id=" + book.id}>
+          <Card>
+            {/* <Card.Img variant="top" src="holder.js/100px160" /> */}
+            <Card.Body>
+              <Card.Title>{book.title}</Card.Title>
+              <Card.Text>{book.author}</Card.Text>
+              {/* <Card.Text>{book.id}</Card.Text> */}
+            </Card.Body>
+          </Card>
+        </NavLink>
       </Col>
     ));
   } catch (err) {
-    //  console.log("empty data");
     message = <span>Empty Library</span>;
   }
 
