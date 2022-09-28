@@ -63,16 +63,10 @@ export default function Info({ data, api }) {
     }
   }, [book]);
 
-  // TODO: fix thumbnail not showing
   const getThumbnail = async () => {
     try {
       console.log(api.items[0].volumeInfo.imageLinks.smallThumbnail + "/");
-      const response = await fetch(api.items[0].volumeInfo.imageLinks.smallThumbnail + "/");
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const image = new Image();
-
-      setThumbnail(image);
+      setThumbnail(api.items[0].volumeInfo.imageLinks.smallThumbnail);
     } catch (err) {
       // console.log("api still loading");
     }
@@ -87,8 +81,7 @@ export default function Info({ data, api }) {
       <Container>
         <Row>
           <Col md={3}>
-            {/* <img src={thumbnail} alt="icon"></img> */}
-            <img src={logo}></img>
+            <img src={thumbnail} alt="book cover"></img>
           </Col>
           <Col md={9}>{message}</Col>
         </Row>
