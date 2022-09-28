@@ -3,6 +3,7 @@
   max-width: 1000px;
   margin: auto;
 }
+
 #editor-navbar {
   display: flex;
   justify-content: space-between;
