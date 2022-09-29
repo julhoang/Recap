@@ -31,6 +31,7 @@ export default function Header({ onChangeDB }) {
       author: author,
       rating: rating,
       quotes: [],
+      tags: [],
       date: new Date(),
       completed: false,
     })

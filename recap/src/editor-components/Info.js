@@ -8,12 +8,11 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-export default function Info({ data, api }) {
+export default function Info({ data, api, id }) {
   const [book, setBook] = useState(data);
   const [info, setinfo] = useState(api);
   const [message, setMessage] = useState(<div>Loading...</div>);
   const [thumbnail, setThumbnail] = useState(undefined);
-  const logo = require("./cover.jpeg");
 
   useEffect(() => {
     setBook(data);
@@ -23,7 +22,7 @@ export default function Info({ data, api }) {
     //  console.log(book);
 
     try {
-      let rating = "🤔";
+      let rating = "No Rating 🤔";
       switch (book.rating.toString()) {
         case "1":
           rating = <Emoji symbol="🌟" label="star" />;
@@ -49,12 +48,10 @@ export default function Info({ data, api }) {
           <div>
             Rating: <span id="rating">{rating}</span>
           </div>
-          {/* <div>
-              Date Range: <span id="date-from">Mar 1, 22</span> <FiArrowRight />{" "}
-              <span id="date-to">Apr 15, 22</span>
-            </div> */}
+
+          {/* Tag Bar */}
           <div id="tagify-div">
-            Tags: <Tagbar />
+            Tags: <Tagbar data={book.tags} id={id} />
           </div>
         </div>
       );
@@ -65,7 +62,6 @@ export default function Info({ data, api }) {
 
   const getThumbnail = async () => {
     try {
-      console.log(api.items[0].volumeInfo.imageLinks.smallThumbnail + "/");
       setThumbnail(api.items[0].volumeInfo.imageLinks.smallThumbnail);
     } catch (err) {
       // console.log("api still loading");

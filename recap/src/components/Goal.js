@@ -4,37 +4,51 @@ import Button from "react-bootstrap/esm/Button";
 import Bar from "./Bar";
 import Emoji from "../editor-components/Emoji";
 
+/**
+ * @constructor
+ * @param: {array} books in progress, {array} books completed
+ * @returns the Yearly Summary Goal section
+ */
 export default function Goal({ progress, completed }) {
   let bookCount = 0;
   let message = "Finish your first book!";
   const [link, setLink] = useState("");
 
-  useEffect(() => {
-    try {
-      setLink("/editor?id=" + progress[0].id);
-    } catch (err) {}
-  }, [progress]);
+  try {
+    bookCount = completed.length; // might be undefined
+  } catch (err) {
+    bookCount = 0;
+  }
 
   try {
-    bookCount = completed.length;
-    console.log(progress[0]);
+    // progress[0] might be undefined
     message = (
       <span>
         Continue: <span id="glance-title">{progress[0].title}</span>
       </span>
     );
   } catch (err) {
-    console.error();
+    message = "Finish your first book!";
   }
 
-  const visitBook = () => {};
+  // Purpose: update link to editor
+  useEffect(() => {
+    try {
+      setLink("/editor?id=" + progress[0].id);
+    } catch (err) {}
+  }, [progress]);
 
   return (
     <div>
+      {/* Section Heading */}
       <h2>Yearly Summary Goal</h2>
+
+      {/* Progress Bar */}
       <div>
         <Bar />
       </div>
+
+      {/* Summary Counts */}
       <div>
         <Emoji symbol={"📚"} /> You have written <b id="total">{bookCount} summaries</b> this year.
         <br></br>
@@ -42,10 +56,9 @@ export default function Goal({ progress, completed }) {
         your goal!
       </div>
 
+      {/* Button Link to Editor */}
       <NavLink to={link}>
-        <Button variant="dark" onClick={visitBook}>
-          {message}
-        </Button>
+        <Button variant="dark">{message}</Button>
       </NavLink>
     </div>
   );
