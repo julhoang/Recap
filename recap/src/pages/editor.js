@@ -18,7 +18,7 @@ export default function Editor() {
   const [info, setInfo] = useState(undefined);
   const id = window.location.search.replace("?id=", "");
 
-  // Purpose: retrive book entry from Firebase
+  // Purpose: retrieve book entry from Firebase
   const getBook = async () => {
     const docRef = doc(db, "books", id);
     const docSnap = await getDoc(docRef);
@@ -31,16 +31,6 @@ export default function Editor() {
   useEffect(() => {
     getBook();
   }, []);
-
-  // Purpose: retrieve more of book's info from Google APIs, once the data from Firebase has loaded
-  useEffect(() => {
-    try {
-      const url = "https://www.googleapis.com/books/v1/volumes?q=" + book.title;
-      fetch(encodeURI(url))
-        .then((res) => res.json())
-        .then((result) => setInfo(result));
-    } catch (err) {}
-  }, [book]);
 
   // TODO: implement TextEditor using SlateJS
 

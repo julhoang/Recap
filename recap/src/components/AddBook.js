@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { db } from "../firebase-config";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
 
 import Button from "react-bootstrap/esm/Button";
 import Modal from "react-bootstrap/Modal";
@@ -13,19 +13,20 @@ function handleSubmit(event) {
   event.preventDefault();
 }
 
-export default function Header({ onChangeDB }) {
+export default function AddBook({ onChangeDB }) {
   const [show, setShow] = useState(false);
 
   const [author, setAuthor] = useState("");
   const [title, setTitle] = useState("");
   const [rating, setRating] = useState(Number(0));
+  const [addImage, setAddImage] = useState(false);
 
   const booksCollectionRef = collection(db, "books");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const addBookToDb = async () => {
+  const addBookToDb = async (imageURL) => {
     await addDoc(booksCollectionRef, {
       title: title,
       author: author,
@@ -34,11 +35,64 @@ export default function Header({ onChangeDB }) {
       tags: [],
       date: new Date(),
       completed: false,
+      image: imageURL,
     })
+      .then((result) => {
+        if (addImage == false) {
+          addImageLater(title, 0, result.id);
+          setAddImage(true);
+        }
+      })
       .then(setTimeout(setShow(false), 2000))
       .then(() => {
         onChangeDB("new book!");
       });
+  };
+
+  const addImageLater = async (title, trial, id) => {
+    try {
+      const url = "https://www.googleapis.com/books/v1/volumes?q=" + title;
+      fetch(encodeURI(url))
+        .then((res) => res.json())
+        .then((result) => {
+          if (addImage == false) {
+            updateBookInfo(result.items[0].volumeInfo.imageLinks.smallThumbnail, id);
+          }
+        })
+        .then(setAddImage(true))
+        .catch((error) => {
+          if (trial <= 3) {
+            addImageLater(title, trial + 1, id);
+          }
+        });
+    } catch (err) {}
+  };
+
+  const updateBookInfo = async (url, id) => {
+    const ref = doc(db, "books", id);
+    updateDoc(ref, {
+      image: url,
+    });
+  };
+
+  useEffect(() => {
+    onChangeDB("new image url");
+  }, [addImage]);
+
+  const getImageURL = async () => {
+    try {
+      const url = "https://www.googleapis.com/books/v1/volumes?q=" + title;
+      fetch(encodeURI(url))
+        .then((res) => res.json())
+        .then((result) => {
+          //  return result.items[0].volumeInfo.imageLinks.smallThumbnail;
+          addBookToDb(result.items[0].volumeInfo.imageLinks.smallThumbnail);
+        })
+        .catch((error) => {
+          addBookToDb("");
+          addImageLater(title, 0);
+        });
+    } catch (err) {}
   };
 
   return (
@@ -119,7 +173,7 @@ export default function Header({ onChangeDB }) {
               </Col>
             </Form.Group>
 
-            <Button type="submit" variant="dark" onClick={addBookToDb}>
+            <Button type="submit" variant="dark" onClick={getImageURL}>
               Submit
             </Button>
           </Form>

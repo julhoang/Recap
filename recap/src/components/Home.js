@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { db } from "../firebase-config";
 import { collection, getDocs } from "firebase/firestore";
 
-import SearchBar from "../components/SearchBar";
-import Header from "../components/Header";
+import AddBook from "./AddBook";
 import Goal from "../components/Goal";
 import Review from "../components/Review";
 import Database from "../components/Database";
@@ -41,7 +40,7 @@ export default function Home() {
     getBooks();
   }, []);
 
-  // receive change notification from the "Add New Book button" from <Header/>
+  // receive change notification from the "Add New Book button" from <AddBook/>
   const onChangeDB = () => {
     getBooks();
   };
@@ -50,7 +49,7 @@ export default function Home() {
     <div className="home">
       {/* TODO: implement search bar */}
       {/* <SearchBar />  */}
-      <Header onChangeDB={onChangeDB} />
+      <AddBook onChangeDB={onChangeDB} />
       <div class="row justify-content-center" id="glance">
         <div class="col">
           <Goal onChangeDB={onChangeDB} completed={completed} progress={progress} />

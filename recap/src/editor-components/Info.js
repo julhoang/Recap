@@ -55,22 +55,12 @@ export default function Info({ data, api, id }) {
           </div>
         </div>
       );
+
+      setThumbnail(book.image);
     } catch (err) {
       //  console.log("book still loading");
     }
   }, [book]);
-
-  const getThumbnail = async () => {
-    try {
-      setThumbnail(api.items[0].volumeInfo.imageLinks.smallThumbnail);
-    } catch (err) {
-      // console.log("api still loading");
-    }
-  };
-
-  useEffect(() => {
-    getThumbnail();
-  }, [api]);
 
   return (
     <div>

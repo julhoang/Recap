@@ -65,5 +65,6 @@ div {
 /* Database */
 .header-badge {
   font-size: 1.3rem;
-  vertical-align: middle;
+  position: relative;
+  top: -4px;
 }

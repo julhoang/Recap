@@ -5,6 +5,7 @@ import Badge from "react-bootstrap/Badge";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import { CardGroup, Container } from "react-bootstrap";
 
 const Cards = (props) => {
   const data = props.data;
@@ -21,17 +22,15 @@ const Cards = (props) => {
 
   try {
     message = data.map((book) => (
-      <Col>
-        <NavLink to={"/editor?id=" + book.id}>
-          <Card>
-            {/* <Card.Img variant="top" src="holder.js/100px160" /> */}
+      <Col md={3} xs={4}>
+        <Card className="justify-content-md-center">
+          <NavLink to={"/editor?id=" + book.id}>
+            <Card.Img variant="top" src={book.image} />
             <Card.Body>
               <Card.Title>{book.title}</Card.Title>
-              <Card.Text>{book.author}</Card.Text>
-              {/* <Card.Text>{book.id}</Card.Text> */}
             </Card.Body>
-          </Card>
-        </NavLink>
+          </NavLink>
+        </Card>
       </Col>
     ));
   } catch (err) {
@@ -49,9 +48,7 @@ const Cards = (props) => {
         </span>
       </h2>
 
-      <Row xs={1} md={2} className="g-4">
-        {message}
-      </Row>
+      <Row>{message}</Row>
     </div>
   );
 };
@@ -60,6 +57,7 @@ export default function Database({ progress, completed }) {
   return (
     <div>
       <Cards id="progress-section" data={progress} />
+
       <Cards id="completed-section" data={completed} />
     </div>
   );
