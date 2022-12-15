@@ -1,11 +1,14 @@
 https://blog.logrocket.com/how-to-use-react-hooks-firebase-firestore/
 --> Show how to update page without reloading
 
-Problem with Goal and Review
+# Deploy to GitHub Page
+npm run deploy
+
+## Problem with Goal and Review
 --> books haven't finished retrieving from firebase, but the code attempt to filter books right away
 which result in calling functions on "undefined" var.
 
-Lesson:
+# Lesson:
 
 - Use try/catch to deal with situations when DB has not finished updating, and we try to parse it.
 - setState is async, which might not update state on time for us to use.
