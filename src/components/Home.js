@@ -50,16 +50,29 @@ export default function Home() {
       {/* TODO: implement search bar */}
       {/* <SearchBar />  */}
       <AddBook onChangeDB={onChangeDB} />
-      <div class="row justify-content-center" id="glance">
-        <div class="col">
-          <Goal onChangeDB={onChangeDB} completed={completed} progress={progress} />
+      <div
+        className="row justify-content-center"
+        id="glance"
+      >
+        <div className="col">
+          <Goal
+            onChangeDB={onChangeDB}
+            completed={completed}
+            progress={progress}
+          />
         </div>
 
-        <div class="col">
-          <Review onChangeDB={onChangeDB} books={completed} />
+        <div className="col">
+          <Review
+            onChangeDB={onChangeDB}
+            books={completed}
+          />
         </div>
       </div>
-      <Database progress={progress} completed={completed} />
+      <Database
+        progress={progress}
+        completed={completed}
+      />
     </div>
   );
 }

@@ -1,12 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-
 import Badge from "react-bootstrap/Badge";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import { CardGroup, Container } from "react-bootstrap";
-import CardHeader from "react-bootstrap/esm/CardHeader";
 
 const Cards = (props) => {
   const data = props.data;
