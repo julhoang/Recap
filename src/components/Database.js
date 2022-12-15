@@ -6,6 +6,7 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { CardGroup, Container } from "react-bootstrap";
+import CardHeader from "react-bootstrap/esm/CardHeader";
 
 const Cards = (props) => {
   const data = props.data;
@@ -22,12 +23,31 @@ const Cards = (props) => {
 
   try {
     message = data.map((book) => (
-      <Col md={3} xs={4}>
-        <Card className="justify-content-md-center">
-          <NavLink to={"/editor?id=" + book.id}>
-            <Card.Img variant="top" src={book.image} />
-            <Card.Body>
+      <Col
+        md={3}
+        xs={4}
+      >
+        <Card className="rounded">
+          <NavLink
+            to={"/editor?id=" + book.id}
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <Card.Header className="bg-light mt-0 d-flex align-items-center justify-content-center">
+              <Card.Img
+                src={book.image}
+                className="mt-2 mb-2"
+                style={{
+                  borderRadius: "10px",
+                  width: "80%",
+                  height: "240px",
+                  objectFit: "cover",
+                }}
+              />
+            </Card.Header>
+
+            <Card.Body className="mt-0 mb-0">
               <Card.Title>{book.title}</Card.Title>
+              <Card.Text style={{ color: "grey" }}>By {book.author}</Card.Text>
             </Card.Body>
           </NavLink>
         </Card>
@@ -42,7 +62,10 @@ const Cards = (props) => {
       <h2>
         {header}{" "}
         <span className="header-badge">
-          <Badge pill bg="primary">
+          <Badge
+            pill
+            bg="primary"
+          >
             {data.length}
           </Badge>
         </span>
@@ -56,9 +79,15 @@ const Cards = (props) => {
 export default function Database({ progress, completed }) {
   return (
     <div>
-      <Cards id="progress-section" data={progress} />
+      <Cards
+        id="progress-section"
+        data={progress}
+      />
 
-      <Cards id="completed-section" data={completed} />
+      <Cards
+        id="completed-section"
+        data={completed}
+      />
     </div>
   );
 }

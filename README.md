@@ -3,10 +3,10 @@
 An app to write and organize book summaries.
 
 ## Current Functionalities
-✔️ Recap is connected to a real Firebase storage.
-✔️ Users can add books, but not remove/modify any books yet.
-✔️ Automatic retrieve book cover from Google Books API
-✔️ Daily Review loads random quotes that admin creates.
+✔️ Recap is connected to a real Firebase storage.  
+✔️ Users can add books, but not remove/modify any books yet.  
+✔️ Automatic retrieve book cover from Google Books API.  
+✔️ Daily Review loads random quotes that admin creates.  
 
 
 ## Future Updates
@@ -16,7 +16,7 @@ An app to write and organize book summaries.
 - Template for summaries
 
 ## Demo
-👉 Test it out at: https://julhoang.github.io/recap/
+👉 https://julhoang.github.io/recap/
 
 ## Attributions
 

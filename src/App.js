@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Routes, Route } from "react-router-dom";
 import Editor from "./pages/editor.js";
 
@@ -15,7 +14,13 @@ export default function App() {
 
 const Main = () => (
   <Routes>
-    <Route path="/" element={<Home />} />
-    <Route path="/editor" element={<Editor />} />
+    <Route
+      path="/"
+      element={<Home />}
+    />
+    <Route
+      path="/editor"
+      element={<Editor />}
+    />
   </Routes>
 );
