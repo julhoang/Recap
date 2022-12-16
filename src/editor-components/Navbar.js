@@ -42,17 +42,29 @@ export default function Navbar({ data, id }) {
   return (
     <div id="editor-navbar">
       <span id="home-btn">
-        <NavLink to="/">
+        <NavLink
+          to="/"
+          style={{ textDecoration: "none", color: "grey" }}
+        >
           <FiChevronLeft /> Back to My Summaries
         </NavLink>
       </span>
 
       <span>
         <Form onSubmit={handleSubmit}>
-          <Button type="submit" id="complete-btn" onClick={updateCompletion} variant="dark">
+          <Button
+            type="submit"
+            id="complete-btn"
+            onClick={updateCompletion}
+            variant="dark"
+          >
             {message}
-          </Button>{" "}
-          <Button type="submit" variant="light">
+          </Button>
+          {"   "}
+          <Button
+            type="submit"
+            variant="light"
+          >
             More
           </Button>
         </Form>

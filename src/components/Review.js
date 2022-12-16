@@ -43,7 +43,10 @@ export default function Review({ books }) {
       {/* Section Heading */}
       <div id="review-header">
         <h2>Daily Review</h2>
-        <Button variant="light" onClick={reloadQuote}>
+        <Button
+          variant="light"
+          onClick={reloadQuote}
+        >
           <FiRefreshCcw />
         </Button>
       </div>
@@ -76,5 +79,5 @@ function ReviewQuote({ book }) {
     }
   } catch (err) {}
 
-  return <p>You have no saved highlights.</p>;
+  return <p>You have no saved highlights in this book.</p>;
 }

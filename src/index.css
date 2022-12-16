@@ -1,6 +1,7 @@
 body {
   max-width: 1000px;
   margin: auto !important;
+  font-family: "Poppins", sans-serif;
 }
 
 div {

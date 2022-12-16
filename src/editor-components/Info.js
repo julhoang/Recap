@@ -25,34 +25,69 @@ export default function Info({ data, api, id }) {
       let rating = "No Rating 🤔";
       switch (book.rating.toString()) {
         case "1":
-          rating = <Emoji symbol="🌟" label="star" />;
+          rating = (
+            <Emoji
+              symbol="🌟"
+              label="star"
+            />
+          );
           break;
         case "2":
-          rating = <Emoji symbol="🌟🌟" label="star" />;
+          rating = (
+            <Emoji
+              symbol="🌟🌟"
+              label="star"
+            />
+          );
           break;
         case "3":
-          rating = <Emoji symbol="🌟🌟🌟" label="star" />;
+          rating = (
+            <Emoji
+              symbol="🌟🌟🌟"
+              label="star"
+            />
+          );
           break;
         case "4":
-          rating = <Emoji symbol="🌟🌟🌟🌟" label="star" />;
+          rating = (
+            <Emoji
+              symbol="🌟🌟🌟🌟"
+              label="star"
+            />
+          );
           break;
         case "5":
-          rating = <Emoji symbol="🌟🌟🌟🌟🌟" label="star" />;
+          rating = (
+            <Emoji
+              symbol="🌟🌟🌟🌟🌟"
+              label="star"
+            />
+          );
           break;
       }
 
       setMessage(
         <div>
           <h2 id="title">{book.title}</h2>
-          <h3 id="author">{book.author}</h3>
-          <div>
-            Rating: <span id="rating">{rating}</span>
-          </div>
+          <h4 id="author">by {book.author}</h4>
 
-          {/* Tag Bar */}
-          <div id="tagify-div">
-            Tags: <Tagbar data={book.tags} id={id} />
-          </div>
+          <table>
+            <tr>
+              <td style={{ width: "5rem", height: "3rem" }}>Rating</td>
+              <td style={{ width: "350px" }}>
+                <span id="rating">{rating}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Tags</td>
+              <td id="tagify-div">
+                <Tagbar
+                  data={book.tags}
+                  id={id}
+                />
+              </td>
+            </tr>
+          </table>
         </div>
       );
 
@@ -67,7 +102,16 @@ export default function Info({ data, api, id }) {
       <Container>
         <Row>
           <Col md={3}>
-            <img src={thumbnail} alt="book cover"></img>
+            <img
+              src={thumbnail}
+              alt="book cover"
+              style={{
+                borderRadius: "10px",
+                width: "80%",
+                height: "240px",
+                objectFit: "cover",
+              }}
+            ></img>
           </Col>
           <Col md={9}>{message}</Col>
         </Row>

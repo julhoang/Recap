@@ -1,8 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { db, booksCollectionRef } from "../firebase-config";
-import { collection, getDocs } from "firebase/firestore";
 import Emoji from "./Emoji";
+import TextEditor from "./TextEditor";
 
 export default function Content({ data, api }) {
   const [book, setBook] = useState(data);
@@ -26,10 +25,20 @@ export default function Content({ data, api }) {
 
   return (
     <div id="quotes-section">
-      {quotes.map((quote) => {
+      {quotes.map((quote, id) => {
         return (
-          <div className="quotes">
-            <Emoji symbol="💡" /> <span>"{quote}"</span>
+          <div className="quote-comment-block">
+            <div className="quotes">
+              <Emoji symbol="💡" />
+              <br></br>
+              {quote.highlight}
+            </div>
+            <hr class="solid"></hr>
+            <TextEditor
+              quotes={quotes}
+              quote={quote}
+              id={id}
+            />
           </div>
         );
       })}

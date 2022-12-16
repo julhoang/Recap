@@ -21,10 +21,16 @@ export default function Tagbar({ data, id }) {
     maxTags: 6,
     backspace: "edit",
     addTagOnBlur: false,
-    placeholder: "type something",
+    placeholder: "type to add tags",
     dropdown: {
       enabled: 0, // always show suggestions dropdown
     },
   };
-  return <Tags settings={tagifySettings} onChange={onChange} value={tags} />;
+  return (
+    <Tags
+      settings={tagifySettings}
+      onChange={onChange}
+      value={tags}
+    />
+  );
 }

@@ -6,6 +6,7 @@ import "@yaireo/tagify/dist/tagify.css";
 import Navbar from "../editor-components/Navbar";
 import Info from "../editor-components/Info";
 import Content from "../editor-components/Content";
+import TextEditor from "../editor-components/TextEditor";
 
 /**
  * @constructor
@@ -37,14 +38,25 @@ export default function Editor() {
   return (
     <div id="editor-main">
       {/* Navbar containing Back, Mark as Completed and More buttons */}
-      <Navbar data={book} id={id} />
+      <Navbar
+        data={book}
+        id={id}
+      />
 
       {/* Book Info (cover img, title, author, rating, tags) Section */}
-      <Info data={book} id={id} api={info} />
+      <Info
+        data={book}
+        id={id}
+        api={info}
+      />
 
       {/* Text/Quotes Editor */}
       <div id="text-editor-section">
-        <Content data={book} api={info} />
+        <Content
+          data={book}
+          api={info}
+        />
+        {/* <TextEditor /> */}
       </div>
     </div>
   );

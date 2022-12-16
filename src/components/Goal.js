@@ -45,7 +45,10 @@ export default function Goal({ progress, completed }) {
 
       {/* Progress Bar */}
       <div>
-        <Bar />
+        <Bar
+          done={bookCount}
+          goal={15}
+        />
       </div>
 
       {/* Summary Counts */}
