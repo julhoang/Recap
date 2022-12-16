@@ -56,7 +56,6 @@ export default function Editor() {
           data={book}
           api={info}
         />
-        {/* <TextEditor /> */}
       </div>
     </div>
   );

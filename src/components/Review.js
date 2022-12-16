@@ -75,7 +75,7 @@ function ReviewQuote({ book }) {
   try {
     let random = Math.floor(Math.random() * book.quotes.length);
     if (book.quotes.length !== 0) {
-      return <p>"{book.quotes[random]}"</p>;
+      return <p>"{book.quotes[random].highlight}"</p>;
     }
   } catch (err) {}
 

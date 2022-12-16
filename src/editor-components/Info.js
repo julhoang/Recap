@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FiArrowRight } from "react-icons/fi";
-
-import Emoji from "./Emoji";
-import Tagbar from "./Tagbar";
-
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Tagbar from "./Tagbar";
+import RatingBar from "./RatingBar";
 
 export default function Info({ data, api, id }) {
   const [book, setBook] = useState(data);
@@ -22,71 +19,29 @@ export default function Info({ data, api, id }) {
     //  console.log(book);
 
     try {
-      let rating = "No Rating 🤔";
-      switch (book.rating.toString()) {
-        case "1":
-          rating = (
-            <Emoji
-              symbol="🌟"
-              label="star"
-            />
-          );
-          break;
-        case "2":
-          rating = (
-            <Emoji
-              symbol="🌟🌟"
-              label="star"
-            />
-          );
-          break;
-        case "3":
-          rating = (
-            <Emoji
-              symbol="🌟🌟🌟"
-              label="star"
-            />
-          );
-          break;
-        case "4":
-          rating = (
-            <Emoji
-              symbol="🌟🌟🌟🌟"
-              label="star"
-            />
-          );
-          break;
-        case "5":
-          rating = (
-            <Emoji
-              symbol="🌟🌟🌟🌟🌟"
-              label="star"
-            />
-          );
-          break;
-      }
-
       setMessage(
         <div>
           <h2 id="title">{book.title}</h2>
           <h4 id="author">by {book.author}</h4>
 
           <table>
-            <tr>
-              <td style={{ width: "5rem", height: "3rem" }}>Rating</td>
-              <td style={{ width: "350px" }}>
-                <span id="rating">{rating}</span>
-              </td>
-            </tr>
-            <tr>
-              <td>Tags</td>
-              <td id="tagify-div">
-                <Tagbar
-                  data={book.tags}
-                  id={id}
-                />
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td style={{ width: "5rem", height: "3rem" }}>Rating</td>
+                <td style={{ width: "350px" }}>
+                  <RatingBar data={book} />
+                </td>
+              </tr>
+              <tr>
+                <td>Tags</td>
+                <td id="tagify-div">
+                  <Tagbar
+                    data={book.tags}
+                    id={id}
+                  />
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       );
