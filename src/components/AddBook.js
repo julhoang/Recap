@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db, updateDB } from "../firebase-config";
-import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 
 import Button from "react-bootstrap/esm/Button";
 import Modal from "react-bootstrap/Modal";
@@ -9,23 +8,41 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/esm/Col";
 
-function handleSubmit(event) {
-  event.preventDefault();
-}
+/**
+ * AddBook is the Modal Component that allows user to input new book title, author and rating.
+ * It retrieves book cover from google book API and create new book entry in the Firestore database.
+ */
 
 export default function AddBook({ onChangeDB }) {
   const [show, setShow] = useState(false);
-
-  const [author, setAuthor] = useState("");
   const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
   const [rating, setRating] = useState(Number(0));
-  const [addImage, setAddImage] = useState(false);
+  const [needUpdateImage, setNeedUpdate] = useState(true);
+  const [validated, setValidated] = useState(false);
+
+  const handleSubmit = (event) => {
+    const form = event.currentTarget;
+    event.preventDefault();
+
+    /**
+     *  Once form is validated:
+     *  Obtain image url from Google Book API first then getImageURL will can addToDB.
+     */
+    if (form.checkValidity() === true) {
+      getImageURL(title);
+    }
+
+    setValidated(true);
+  };
 
   const booksCollectionRef = collection(db, "books");
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+  const handleShow = () => {
+    resetForm();
+    setShow(true);
+  };
   const addBookToDb = async (imageURL) => {
     await addDoc(booksCollectionRef, {
       title: title,
@@ -38,9 +55,8 @@ export default function AddBook({ onChangeDB }) {
       image: imageURL,
     })
       .then((result) => {
-        if (!addImage) {
+        if (needUpdateImage) {
           addImageLater(title, 0, result.id);
-          setAddImage(true);
         }
       })
       .then(setTimeout(setShow(false), 2000))
@@ -50,47 +66,51 @@ export default function AddBook({ onChangeDB }) {
   };
 
   const addImageLater = async (title, trial, id) => {
-    try {
-      const url = "https://www.googleapis.com/books/v1/volumes?q=" + title;
-      fetch(encodeURI(url))
-        .then((res) => res.json())
-        .then((result) => {
-          if (!addImage) {
-            updateBookInfo(result.items[0].volumeInfo.imageLinks.smallThumbnail, id);
-          }
-        })
-        .then(setAddImage(true))
-        .catch((error) => {
-          if (trial <= 3) {
-            addImageLater(title, trial + 1, id);
-          }
-        });
-    } catch (err) {}
-  };
-
-  const updateBookInfo = (url, id) => {
-    updateDB(id, "image", url);
+    const url = "https://www.googleapis.com/books/v1/volumes?q=" + title;
+    fetch(encodeURI(url))
+      .then((res) => res.json())
+      .then((result) => {
+        if (needUpdateImage) {
+          updateDB(id, "image", result.items[0].volumeInfo.imageLinks.smallThumbnail);
+        }
+      })
+      .then(setNeedUpdate(false))
+      .catch((error) => {
+        if (trial <= 2 && needUpdateImage) {
+          addImageLater(title, trial + 1, id);
+        }
+      });
   };
 
   useEffect(() => {
     onChangeDB("new image url");
-  }, [addImage]);
+  }, [needUpdateImage]);
 
-  const getImageURL = async () => {
-    try {
-      const url = "https://www.googleapis.com/books/v1/volumes?q=" + title;
-      fetch(encodeURI(url))
-        .then((res) => res.json())
-        .then((result) => {
-          url = result.items[0].volumeInfo.imageLinks.smallThumbnail.replace("http", "https");
-          addBookToDb(url);
-        })
-        .catch((error) => {
-          addBookToDb("");
-          addImageLater(title, 0);
-        });
-    } catch (err) {}
-  };
+  function resetForm() {
+    setTitle("");
+    setAuthor("");
+    setRating("");
+    setValidated(false);
+  }
+
+  async function getImageURL(title) {
+    console.log("check title", title);
+    const url = "https://www.googleapis.com/books/v1/volumes?q=" + title;
+    fetch(encodeURI(url))
+      .then((res) => res.json())
+      .then((result) => {
+        let imageURL = result.items[0].volumeInfo.imageLinks.smallThumbnail.replace(
+          "http",
+          "https"
+        );
+        setNeedUpdate(false);
+        addBookToDb(imageURL);
+      })
+      .catch((error) => {
+        setNeedUpdate(true);
+        addBookToDb("");
+      });
+  }
 
   return (
     <div id="header">
@@ -114,9 +134,14 @@ export default function AddBook({ onChangeDB }) {
           <Modal.Title id="contained-modal-title-vcenter">Add New Book</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+        <Form
+          noValidate
+          validated={validated}
+          onSubmit={handleSubmit}
+        >
+          <Modal.Body>
             {/* Title */}
+
             <Form.Group
               as={Row}
               className="mb-2"
@@ -138,6 +163,9 @@ export default function AddBook({ onChangeDB }) {
                     setTitle(event.target.value);
                   }}
                 />
+                <Form.Control.Feedback type="invalid">
+                  Please provide the book title.
+                </Form.Control.Feedback>
               </Col>
             </Form.Group>
 
@@ -156,12 +184,16 @@ export default function AddBook({ onChangeDB }) {
 
               <Col sm={8}>
                 <Form.Control
+                  required
                   type="text"
                   placeholder="Author"
                   onChange={(event) => {
                     setAuthor(event.target.value);
                   }}
                 />
+                <Form.Control.Feedback type="invalid">
+                  Please provide the author's name.
+                </Form.Control.Feedback>
               </Col>
             </Form.Group>
 
@@ -185,7 +217,7 @@ export default function AddBook({ onChangeDB }) {
                     setRating(event.target.value);
                   }}
                 >
-                  <option>Select</option>
+                  <option value="0">No Rating 🤔</option>
                   <option value="1">⭐</option>
                   <option value="2">⭐⭐</option>
                   <option value="3">⭐⭐⭐</option>
@@ -196,14 +228,13 @@ export default function AddBook({ onChangeDB }) {
             </Form.Group>
 
             <Button
-              type="submit"
               variant="dark"
-              onClick={getImageURL}
+              type="submit"
             >
               Submit
             </Button>
-          </Form>
-        </Modal.Body>
+          </Modal.Body>
+        </Form>
       </Modal>
     </div>
   );
