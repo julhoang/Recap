@@ -1,23 +1,22 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import Tags from "@yaireo/tagify/dist/react.tagify";
 import "@yaireo/tagify/dist/tagify.css";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase-config";
+import { updateDB } from "../firebase-config";
 
-export default function Tagbar({ data, id }) {
-  const [tags, setTags] = useState(data);
-
-  const onChange = useCallback((e) => {
+/**
+ * Tagbar is the implemetation of Tagify
+ */
+export default function Tagbar({ data, bookID }) {
+  /**
+   * Update database as user modifies the tag bar.
+   */
+  function onChange(e) {
     var currentTags = e.detail.tagify.getCleanValue();
-
-    const ref = doc(db, "books", id);
-    updateDoc(ref, {
-      tags: currentTags,
-    });
-  }, []);
+    updateDB(bookID, "tags", currentTags);
+  }
 
   const tagifySettings = {
-    blacklist: ["xxx", "yyy", "zzz"],
+    blacklist: [],
     maxTags: 6,
     backspace: "edit",
     addTagOnBlur: false,
@@ -30,7 +29,7 @@ export default function Tagbar({ data, id }) {
     <Tags
       settings={tagifySettings}
       onChange={onChange}
-      value={tags}
+      value={data}
     />
   );
 }

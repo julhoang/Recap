@@ -1,43 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/Form";
 import { FiChevronLeft } from "react-icons/fi";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase-config";
+import { updateDB } from "../firebase-config";
 
-function handleSubmit(event) {
-  event.preventDefault();
-}
-
+/**
+ * Navbar is the navigation/utility bar at the top of the page.
+ * It contains the Back to main page button, Completion button, and the More button.
+ */
 export default function Navbar({ data, id }) {
-  const ref = doc(db, "books", id);
-  const [message, setMessage] = useState("...");
-  const [status, setStatus] = useState(undefined);
+  const [status, setStatus] = useState(data.completed);
 
-  const updateCompletion = async () => {
-    let newStatus = status ? false : true;
-    await updateDoc(ref, {
-      completed: newStatus,
-    }).then(() => {
-      setStatus(newStatus);
-      //  console.log("successfully updated completion status");
-    });
-  };
+  function handleSubmit(event) {
+    event.preventDefault();
+  }
 
-  useEffect(() => {
-    try {
-      setStatus(data.completed);
-    } catch (err) {}
-  }, [data]);
-
-  useEffect(() => {
-    if (status) {
-      setMessage("Completed ✅");
-    } else {
-      setMessage("Mark As Completed");
-    }
-  }, [status]);
+  /**
+   * Toggle the completion status and update the database to reflect changes.
+   */
+  function updateCompletion() {
+    updateDB(id, "completed", !status);
+    setStatus((prev) => !prev);
+  }
 
   return (
     <div id="editor-navbar">
@@ -58,7 +43,7 @@ export default function Navbar({ data, id }) {
             onClick={updateCompletion}
             variant="dark"
           >
-            {message}
+            {status ? "Completed ✅" : "Mark As Completed"}
           </Button>
           {"   "}
           <Button

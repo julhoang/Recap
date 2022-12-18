@@ -1,64 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Tagbar from "./Tagbar";
 import RatingBar from "./RatingBar";
 
-export default function Info({ data, api, id }) {
-  const [book, setBook] = useState(data);
-  const [info, setinfo] = useState(api);
-  const [message, setMessage] = useState(<div>Loading...</div>);
-  const [thumbnail, setThumbnail] = useState(undefined);
-
-  useEffect(() => {
-    setBook(data);
-  });
-
-  useEffect(() => {
-    //  console.log(book);
-
-    try {
-      setMessage(
-        <div>
-          <h2 id="title">{book.title}</h2>
-          <h4 id="author">by {book.author}</h4>
-
-          <table>
-            <tbody>
-              <tr>
-                <td style={{ width: "5rem", height: "3rem" }}>Rating</td>
-                <td style={{ width: "350px" }}>
-                  <RatingBar data={book} />
-                </td>
-              </tr>
-              <tr>
-                <td>Tags</td>
-                <td id="tagify-div">
-                  <Tagbar
-                    data={book.tags}
-                    id={id}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      );
-
-      setThumbnail(book.image);
-    } catch (err) {
-      //  console.log("book still loading");
-    }
-  }, [book]);
-
+/**
+ * Info is the container at the top of the page.
+ * It contains the book covers, book title, author, rating bar and tag bar.
+ */
+export default function Info({ book, bookID }) {
   return (
     <div>
       <Container>
         <Row>
           <Col md={3}>
             <img
-              src={thumbnail}
+              src={book.image}
               alt="book cover"
               style={{
                 borderRadius: "10px",
@@ -68,7 +26,35 @@ export default function Info({ data, api, id }) {
               }}
             ></img>
           </Col>
-          <Col md={9}>{message}</Col>
+          <Col md={9}>
+            <div>
+              <h2 id="title">{book.title}</h2>
+              <h4 id="author">by {book.author}</h4>
+
+              <table>
+                <tbody>
+                  <tr>
+                    <td style={{ width: "5rem", height: "3rem" }}>Rating</td>
+                    <td style={{ width: "350px" }}>
+                      <RatingBar
+                        rating={book.rating}
+                        bookID={bookID}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Tags</td>
+                    <td id="tagify-div">
+                      <Tagbar
+                        data={book.tags}
+                        bookID={bookID}
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </Col>
         </Row>
       </Container>
     </div>

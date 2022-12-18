@@ -1,35 +1,18 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase-config";
+import { useEffect } from "react";
+import { updateDB } from "../firebase-config";
 import Form from "react-bootstrap/Form";
-import Emoji from "./Emoji";
 
-export default function RatingBar(data) {
-  const [book, setBook] = useState(data.data);
-
+export default function RatingBar({ rating, bookID }) {
   useEffect(() => {
-    setBook(data.data);
-  });
+    document.getElementById("rating").value = rating;
+  }, []);
 
-  useEffect(() => {
-    try {
-      if (book.rating) {
-        console.log(book.rating);
-        document.getElementById("rating").value = book.rating;
-      }
-    } catch (err) {
-      document.getElementById("rating").value = 0;
-    }
-  }, [book]);
-
+  /**
+   * Update database as user modifies rating
+   */
   function updateRating(e) {
-    const id = window.location.search.replace("?id=", "");
-    const ref = doc(db, "books", id);
-
-    updateDoc(ref, {
-      rating: document.getElementById("rating").value,
-    });
+    updateDB(bookID, "rating", e.target.value);
   }
 
   return (
@@ -39,36 +22,11 @@ export default function RatingBar(data) {
       onChange={updateRating}
     >
       <option value="0">No Rating 🤔</option>
-      <option value="1">
-        <Emoji
-          symbol="🌟"
-          label="1 star"
-        />
-      </option>
-      <option value="2">
-        <Emoji
-          symbol="🌟🌟"
-          label="2 stars"
-        />
-      </option>
-      <option value="3">
-        <Emoji
-          symbol="🌟🌟🌟"
-          label="3 stars"
-        />
-      </option>
-      <option value="4">
-        <Emoji
-          symbol="🌟🌟🌟🌟"
-          label="4 stars"
-        />
-      </option>
-      <option value="5">
-        <Emoji
-          symbol="🌟🌟🌟🌟🌟"
-          label="5 stars"
-        />
-      </option>
+      <option value="1">🌟</option>
+      <option value="2">🌟🌟</option>
+      <option value="3">🌟🌟🌟</option>
+      <option value="4">🌟🌟🌟🌟</option>
+      <option value="5">🌟🌟🌟🌟🌟</option>
     </Form.Select>
   );
 }
