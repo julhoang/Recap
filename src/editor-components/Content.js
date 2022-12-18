@@ -1,72 +1,60 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase-config";
+import { updateDB } from "../firebase-config";
 import TextEditor from "./TextEditor";
-import { useIsMount } from "./react-mounting";
 
-export default function Content({ data, api }) {
-  const isMount = useIsMount();
-  const [book, setBook] = useState(data);
-  const [quotes, setQuotes] = useState([]);
+/**
+ * Content is the container where all of the TextEditor components reside in.
+ */
 
-  const loadQuotes = async () => {
-    try {
-      setQuotes(book.quotes);
-    } catch (err) {
-      console.log("book still loading");
-    }
-  };
+export default function Content({ book, bookID }) {
+  const [quotes, setQuotes] = useState(
+    book.quotes.map((quote, index) => (quote = { ...quote, id: index }))
+  );
+  const [uid, setUID] = useState(book.quotes.length - 1);
 
-  useEffect(() => {
-    setBook(data);
-  });
-
-  useEffect(() => {
-    loadQuotes();
-  }, [book]);
-
-  function addNewHighlight() {
+  /**
+   * Create a new highlight box by adding an empty 'quote' object to quotes
+   * React will re-render the page as 'quotes' has changed.
+   */
+  function addNewHighlightBox() {
     const quote = {
       highlight: "",
       note: "",
+      id: uid + 1,
     };
-
+    setUID((prev) => prev + 1);
     setQuotes([...quotes, quote]);
   }
 
-  // function removeHighlight(id, newQuotes) {
-  //   console.log("removed " + id);
-  //   setQuotes(newQuotes);
-  // }
+  /**
+   * add new quote+note to database
+   */
+  function saveToDB(allQuotes) {
+    updateDB(bookID, "quotes", allQuotes);
+    setQuotes(allQuotes);
+  }
 
-  // useEffect(() => {
-  //   if (!isMount) {
-  //     updateBookInfo();
-  //   }
-  // }, [quotes]);
-
-  // function updateBookInfo() {
-  //   console.log(quotes);
-  //   setQuotes(quotes);
-  //   // const id = window.location.search.replace("?id=", "");
-  //   // const ref = doc(db, "books", id);
-  //   // updateDoc(ref, {
-  //   //   quotes: quotes,
-  //   // });
-  //   // console.log(quotes);
-  // }
+  /**
+   * remove new quote+note from database by id
+   */
+  function removeFromDB(id) {
+    const newQuotes = quotes.filter((quote) => quote.id != id);
+    updateDB(bookID, "quotes", newQuotes);
+    setQuotes(newQuotes);
+  }
 
   return (
     <div id="quotes-section">
-      <Button onClick={addNewHighlight}>Add New Highlight</Button>
-      {quotes.map((quote, id) => {
+      <Button onClick={addNewHighlightBox}>Add New Highlight</Button>
+      {quotes.map((quote) => {
         return (
           <TextEditor
+            key={"editor-" + quote.id.toString()}
             quotes={quotes}
             quote={quote}
-            id={id}
+            remove={removeFromDB}
+            add={saveToDB}
           />
         );
       })}

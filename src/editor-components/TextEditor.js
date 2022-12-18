@@ -1,17 +1,20 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase-config";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
-import Emoji from "./Emoji";
 
-export default function TextEditor({ quotes, quote, id }) {
+/**
+ * @brief TextEditor is a component consist of the highlight and the note box.
+ */
+
+export default function TextEditor({ quotes, quote, add, remove }) {
+  const id = quote.id;
   const [note, setNote] = useState(quote.note);
   const [highlight, setHighlight] = useState(quote.highlight);
-  const [allQuotes, setAllQuotes] = useState(quotes);
 
-  function handleCancel(e) {
-    const id = e.target.id.replace("cancel-", "");
+  /**
+   * If user hit Cancel, restore all previous value states and close the edit view.
+   */
+  function handleCancel() {
     const noteArea = document.getElementById("my-note-" + id);
     noteArea.value = note;
     noteArea.classList.remove("textarea-show");
@@ -23,9 +26,10 @@ export default function TextEditor({ quotes, quote, id }) {
     document.getElementById("control-" + id).classList.remove("display");
   }
 
-  function handleSave(e) {
-    const id = e.target.id.replace("save-", "");
-
+  /**
+   * If user hit Cancel, call the parent's addToDB function and close the edit view.
+   */
+  function handleSave() {
     const noteArea = document.getElementById("my-note-" + id);
     setNote(noteArea.value);
     noteArea.classList.remove("textarea-show");
@@ -36,42 +40,37 @@ export default function TextEditor({ quotes, quote, id }) {
 
     document.getElementById("control-" + id).classList.remove("display");
 
+    let allQuotes = [...quotes];
     allQuotes[id].note = noteArea.value;
     allQuotes[id].highlight = highlightArea.value;
-    updateBookInfo();
+
+    add(allQuotes);
   }
 
-  // function handleDeleteHighlight(e) {
-  //   const id = e.target.id.replace("delete-", "");
-  //   const highlight = quotes[id].highlight;
-  //   let newQuotes = [...quotes];
-  //   newQuotes = newQuotes.filter((quote) => quote.highlight != highlight);
-  //   removeFunction(id, newQuotes);
-  // }
-
-  function updateBookInfo() {
-    const id = window.location.search.replace("?id=", "");
-    const ref = doc(db, "books", id);
-    updateDoc(ref, {
-      quotes: allQuotes,
-    });
+  /**
+   * If user hit Delete, call the parent's removeFromDB function and close the edit view.
+   */
+  function handleRemove() {
+    remove(id);
   }
 
-  function showTextArea(e) {
-    const id = e.target.id.replace("my-note", "").replace("highlight", "");
-    const textarea = document.getElementById(e.target.id);
+  /**
+   * If user hit on the highlight or note textarea, mimic an "edit view".
+   */
+  function showTextArea() {
+    const textarea = document.getElementById("my-note-" + id);
     textarea.classList.add("textarea-show");
-    document.getElementById("control" + id).classList.add("display");
+    document.getElementById("control-" + id).classList.add("display");
   }
 
   return (
     <div className="quote-comment-block">
       <div className="quotes">
-        <Emoji symbol="💡" />
+        <span className="emoji">💡</span>
         <br></br>
         <textarea
           placeholder="Add New Highlight"
-          id={"highlight-" + id}
+          id={"highlight-" + quote.id}
           onClick={showTextArea}
         >
           {highlight}
@@ -89,7 +88,7 @@ export default function TextEditor({ quotes, quote, id }) {
         </textarea>
       </div>
 
-      {/* Buttons */}
+      {/* Control Buttons */}
       <div
         className="control-buttons"
         id={"control-" + id}
@@ -108,13 +107,13 @@ export default function TextEditor({ quotes, quote, id }) {
         >
           Cancel
         </Button>
-        {/* <Button
+        <Button
           variant="outline-danger"
-          onClick={handleDeleteHighlight}
+          onClick={handleRemove}
           id={"delete-" + id}
         >
           Delete Highlight
-        </Button> */}
+        </Button>
       </div>
     </div>
   );
