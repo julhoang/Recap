@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { db } from "../firebase-config";
+import { db, updateDB } from "../firebase-config";
 import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
 
 import Button from "react-bootstrap/esm/Button";
@@ -38,7 +38,7 @@ export default function AddBook({ onChangeDB }) {
       image: imageURL,
     })
       .then((result) => {
-        if (addImage == false) {
+        if (!addImage) {
           addImageLater(title, 0, result.id);
           setAddImage(true);
         }
@@ -55,7 +55,7 @@ export default function AddBook({ onChangeDB }) {
       fetch(encodeURI(url))
         .then((res) => res.json())
         .then((result) => {
-          if (addImage == false) {
+          if (!addImage) {
             updateBookInfo(result.items[0].volumeInfo.imageLinks.smallThumbnail, id);
           }
         })
@@ -68,11 +68,8 @@ export default function AddBook({ onChangeDB }) {
     } catch (err) {}
   };
 
-  const updateBookInfo = async (url, id) => {
-    const ref = doc(db, "books", id);
-    updateDoc(ref, {
-      image: url,
-    });
+  const updateBookInfo = (url, id) => {
+    updateDB(id, "image", url);
   };
 
   useEffect(() => {
@@ -85,8 +82,8 @@ export default function AddBook({ onChangeDB }) {
       fetch(encodeURI(url))
         .then((res) => res.json())
         .then((result) => {
-          //  return result.items[0].volumeInfo.imageLinks.smallThumbnail;
-          addBookToDb(result.items[0].volumeInfo.imageLinks.smallThumbnail);
+          url = result.items[0].volumeInfo.imageLinks.smallThumbnail.replace("http", "https");
+          addBookToDb(url);
         })
         .catch((error) => {
           addBookToDb("");
@@ -98,7 +95,11 @@ export default function AddBook({ onChangeDB }) {
   return (
     <div id="header">
       <h1>My Summaries</h1>
-      <Button variant="dark" id="createBooks" onClick={handleShow}>
+      <Button
+        variant="dark"
+        id="createBooks"
+        onClick={handleShow}
+      >
         Add New Books
       </Button>
 
@@ -116,8 +117,15 @@ export default function AddBook({ onChangeDB }) {
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             {/* Title */}
-            <Form.Group as={Row} className="mb-2" controlId="formTitle">
-              <Form.Label column sm={3}>
+            <Form.Group
+              as={Row}
+              className="mb-2"
+              controlId="formTitle"
+            >
+              <Form.Label
+                column
+                sm={3}
+              >
                 TITLE
               </Form.Label>
 
@@ -134,8 +142,15 @@ export default function AddBook({ onChangeDB }) {
             </Form.Group>
 
             {/* Author */}
-            <Form.Group as={Row} className="mb-2" controlId="formAuthor">
-              <Form.Label column sm={3}>
+            <Form.Group
+              as={Row}
+              className="mb-2"
+              controlId="formAuthor"
+            >
+              <Form.Label
+                column
+                sm={3}
+              >
                 AUTHOR
               </Form.Label>
 
@@ -152,8 +167,15 @@ export default function AddBook({ onChangeDB }) {
 
             {/* Rating */}
 
-            <Form.Group as={Row} className="mb-2" controlId="formRating">
-              <Form.Label column sm={3}>
+            <Form.Group
+              as={Row}
+              className="mb-2"
+              controlId="formRating"
+            >
+              <Form.Label
+                column
+                sm={3}
+              >
                 RATING (1-5)
               </Form.Label>
               <Col sm={8}>
@@ -173,7 +195,11 @@ export default function AddBook({ onChangeDB }) {
               </Col>
             </Form.Group>
 
-            <Button type="submit" variant="dark" onClick={getImageURL}>
+            <Button
+              type="submit"
+              variant="dark"
+              onClick={getImageURL}
+            >
               Submit
             </Button>
           </Form>
