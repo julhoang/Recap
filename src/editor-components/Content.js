@@ -31,7 +31,7 @@ export default function Content({ book, bookID }) {
    * add new quote+note to database
    */
   function saveToDB(allQuotes) {
-    updateDB(bookID, "quotes", allQuotes);
+    updateDB(bookID, { quotes: allQuotes });
     setQuotes(allQuotes);
   }
 
@@ -40,7 +40,7 @@ export default function Content({ book, bookID }) {
    */
   function removeFromDB(id) {
     const newQuotes = quotes.filter((quote) => quote.id != id);
-    updateDB(bookID, "quotes", newQuotes);
+    updateDB(bookID, { quotes: newQuotes });
     setQuotes(newQuotes);
   }
 

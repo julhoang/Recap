@@ -5,8 +5,13 @@
 }
 
 #editor-navbar {
-  display: flex;
-  justify-content: space-between;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.btn-group,
+.btn-toolbar {
+  margin: 0 !important;
 }
 
 .card-link,

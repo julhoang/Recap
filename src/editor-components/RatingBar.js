@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { updateDB } from "../firebase-config";
 import Form from "react-bootstrap/Form";
 
@@ -12,7 +11,7 @@ export default function RatingBar({ rating, bookID }) {
    * Update database as user modifies rating
    */
   function updateRating(e) {
-    updateDB(bookID, "rating", e.target.value);
+    updateDB(bookID, { rating: e.target.value });
   }
 
   return (

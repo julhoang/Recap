@@ -71,7 +71,11 @@ export default function AddBook({ onChangeDB }) {
       .then((res) => res.json())
       .then((result) => {
         if (needUpdateImage) {
-          updateDB(id, "image", result.items[0].volumeInfo.imageLinks.smallThumbnail);
+          let imageURL = result.items[0].volumeInfo.imageLinks.smallThumbnail.replace(
+            "http",
+            "https"
+          );
+          updateDB(id, { image: imageURL });
         }
       })
       .then(setNeedUpdate(false))

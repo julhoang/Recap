@@ -23,7 +23,8 @@ export default function Editor() {
 
     if (docSnap.exists()) {
       console.log("found book from Firebase");
-      setBook(docSnap.data());
+      console.log(docSnap.data());
+      setBook({ ...docSnap.data() });
     }
   };
 
@@ -31,13 +32,18 @@ export default function Editor() {
     getBook();
   }, []); // the [] will help this runs only once - after the page renders
 
+  function onChangeDB() {
+    getBook();
+  }
+
   return (
     <div id="editor-main">
       {/* Navbar containing Back, Mark as Completed and More buttons */}
       {book && (
         <Navbar
-          data={book}
-          id={bookID}
+          book={book}
+          bookID={bookID}
+          onChangeDB={onChangeDB}
         />
       )}
 
