@@ -20,7 +20,7 @@ export default function ModifyModal({ book, bookID, onChangeDB, setShow }) {
     });
 
     setTimeout(setShow(false), 2000);
-    onChangeDB("new book info");
+    onChangeDB({ author: author, title: title, image: img });
   }
 
   return (

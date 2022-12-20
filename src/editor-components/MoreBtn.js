@@ -60,7 +60,6 @@ export default function MoreBtn({ book, bookID, onChangeDB }) {
         {showDelete && (
           <DeleteModal
             bookID={bookID}
-            onChangeDB={onChangeDB}
             setShow={setShowDelete}
           ></DeleteModal>
         )}

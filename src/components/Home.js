@@ -15,15 +15,14 @@ import Database from "../components/Database";
 
 export default function Home() {
   const booksCollectionRef = collection(db, "books");
-  const [books, setBooks] = useState(undefined);
-  const [completed, setCompleted] = useState(undefined);
-  const [progress, setProgress] = useState(undefined);
+  const [books, setBooks] = useState();
+  const [completed, setCompleted] = useState();
+  const [progress, setProgress] = useState();
 
   async function getBooks() {
     const data = await getDocs(booksCollectionRef);
     const localBooks = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     updateBooks(localBooks);
-    console.log(localBooks);
     setBooks(localBooks);
   }
 
@@ -61,7 +60,6 @@ export default function Home() {
           >
             <div className="col">
               <Goal
-                onChangeDB={onChangeDB}
                 completed={completed}
                 progress={progress}
               />

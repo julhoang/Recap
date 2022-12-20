@@ -9,14 +9,14 @@ import { NavLink } from "react-router-dom";
  * @returns the Daily Review Section
  */
 export default function Review({ books }) {
-  const [chosenBook, setChosenBook] = useState();
+  const [chosenBook, setChosenBook] = useState(undefined);
   const [message, setMessage] = useState("Finish A Book to Start Review");
   const [link, setLink] = useState("/");
 
   // Purpose: Load New Quote Upon starting, or if user click reload button
   // Update: chosenBook, link, and review message
   const reloadQuote = () => {
-    let bookCount = books.length; // can be undefined
+    let bookCount = books.length;
     let random = Math.floor(Math.random() * bookCount);
     let chosenBook = books[random];
 
@@ -31,12 +31,8 @@ export default function Review({ books }) {
 
   // Purpose: update quote once {array} books finished loading
   useEffect(() => {
-    try {
-      reloadQuote();
-    } catch (err) {
-      console.log("books.length undefined");
-    }
-  }, [books]);
+    reloadQuote();
+  }, []);
 
   return (
     <div>
@@ -52,9 +48,12 @@ export default function Review({ books }) {
       </div>
 
       {/* Review Quote Area */}
-      <div id="review-quotes-area">
-        <ReviewQuote book={chosenBook} />
-      </div>
+
+      {chosenBook && (
+        <div id="review-quotes-area">
+          <ReviewQuote book={chosenBook} />
+        </div>
+      )}
 
       {/* Button Link to Editor */}
       <NavLink to={link}>
@@ -72,12 +71,10 @@ export default function Review({ books }) {
  * @returns a book quote or friendly error message
  */
 function ReviewQuote({ book }) {
-  try {
-    let random = Math.floor(Math.random() * book.quotes.length);
-    if (book.quotes.length !== 0) {
-      return <p>"{book.quotes[random].highlight}"</p>;
-    }
-  } catch (err) {}
+  let random = Math.floor(Math.random() * book.quotes.length);
+  if (book.quotes.length !== 0) {
+    return <p>"{book.quotes[random].highlight}"</p>;
+  }
 
   return <p>You have no saved highlights in this book.</p>;
 }

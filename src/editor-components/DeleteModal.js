@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import { deleteBook } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 
-const DeleteModal = ({ bookID, onChangeDB, setShow }) => {
+const DeleteModal = ({ bookID, setShow }) => {
   const navigate = useNavigate();
   const handleModifyInfo = (e) => {
     e.preventDefault();

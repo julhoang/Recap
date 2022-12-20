@@ -13,6 +13,7 @@ import MoreBtn from "./MoreBtn";
  * It contains the Back to main page button, Completion button, and the More button.
  */
 export default function Navbar({ book, bookID, onChangeDB }) {
+  console.log("Navbar rendered");
   const [status, setStatus] = useState(book.completed);
 
   /**

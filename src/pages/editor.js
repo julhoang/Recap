@@ -29,11 +29,12 @@ export default function Editor() {
   };
 
   useEffect(() => {
+    console.log("getBook called from useEffect");
     getBook();
   }, []); // the [] will help this runs only once - after the page renders
 
-  function onChangeDB() {
-    getBook();
+  function onChangeDB(newInfo) {
+    setBook({ ...book, ...newInfo });
   }
 
   return (
