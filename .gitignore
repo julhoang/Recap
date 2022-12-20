@@ -3,6 +3,6 @@ node_modules/
 build/
 .DS_Store
 
-api.js
+src/api.js
 notes.md 
 
