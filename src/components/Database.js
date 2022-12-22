@@ -5,26 +5,21 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
-const Cards = (props) => {
-  const data = props.data;
-
-  const id = "cards-" + props.id;
-  let header = "";
-  if (props.id == "progress-section") {
-    header = "Summaries In Progress";
-  } else {
-    header = "Summaries Completed";
-  }
-
-  let message = "";
+const Cards = ({ data, id }) => {
+  let header = "Summaries " + (id === "progress-section" ? "In Progress" : "Completed");
+  let message = <span>Empty Library</span>;
 
   try {
-    message = data.map((book) => (
+    message = data.map((book, id) => (
       <Col
         md={3}
-        xs={4}
+        xs={6}
+        key={"col-" + id.toString()}
       >
-        <Card className="rounded">
+        <Card
+          className="rounded"
+          key={"card-" + id.toString()}
+        >
           <NavLink
             to={"/editor?id=" + book.id}
             style={{ textDecoration: "none", color: "black" }}
@@ -35,9 +30,10 @@ const Cards = (props) => {
                 className="mt-2 mb-2"
                 style={{
                   borderRadius: "10px",
-                  width: "80%",
-                  height: "240px",
+                  minWidth: 100,
                   objectFit: "cover",
+                  objectPosition: "center",
+                  aspectRatio: 2 / 3,
                 }}
               />
             </Card.Header>
@@ -50,12 +46,10 @@ const Cards = (props) => {
         </Card>
       </Col>
     ));
-  } catch (err) {
-    message = <span>Empty Library</span>;
-  }
+  } catch (err) {}
 
   return (
-    <div id={id}>
+    <div id={"cards-" + id}>
       <h2>
         {header}{" "}
         <span className="header-badge">

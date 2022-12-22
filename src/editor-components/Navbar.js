@@ -28,11 +28,14 @@ export default function Navbar({ book, bookID, onChangeDB }) {
     <div id="editor-navbar">
       <ButtonToolbar
         size="sm"
-        className="justify-content-between"
+        className="justify-content-center justify-content-sm-between"
         aria-label="Navigation bar with control buttons"
       >
         {/* Back Button */}
-        <Button variant="light">
+        <Button
+          variant="light"
+          className="d-none d-sm-block"
+        >
           <NavLink
             to="/"
             style={{ textDecoration: "none", color: "grey" }}
@@ -41,7 +44,10 @@ export default function Navbar({ book, bookID, onChangeDB }) {
           </NavLink>
         </Button>
 
-        <ButtonGroup aria-label="Other book settings">
+        <ButtonGroup
+          aria-label="Other book settings"
+          className="align-self-end"
+        >
           {/* Completion Button */}
           <Button
             type="submit"

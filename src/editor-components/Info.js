@@ -13,8 +13,11 @@ export default function Info({ book, bookID }) {
   return (
     <div>
       <Container>
-        <Row>
-          <Col md={3}>
+        <Row className="gx-20">
+          <Col
+            md={3}
+            className="d-flex justify-content-center justify-content-sm-start"
+          >
             <img
               src={book.image}
               alt="book cover"

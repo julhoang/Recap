@@ -6,6 +6,7 @@ import AddBook from "./AddBook";
 import Goal from "../components/Goal";
 import Review from "../components/Review";
 import Database from "../components/Database";
+import { Row, Col } from "react-bootstrap";
 
 /**
  * Home is the major constructor for the main page.
@@ -54,23 +55,28 @@ export default function Home() {
       {books && <AddBook onChangeDB={onChangeDB} />}
       {completed && progress && (
         <>
-          <div
-            className="row justify-content-center"
-            id="glance"
-          >
-            <div className="col">
-              <Goal
-                completed={completed}
-                progress={progress}
-              />
-            </div>
-
-            <div className="col">
-              <Review
-                onChangeDB={onChangeDB}
-                books={completed}
-              />
-            </div>
+          <div id="glance">
+            <Row>
+              <Col
+                md={6}
+                xs={12}
+              >
+                <Goal
+                  completed={completed}
+                  progress={progress}
+                />
+              </Col>
+              <hr class="solid d-block d-md-none"></hr>
+              <Col
+                md={6}
+                xs={12}
+              >
+                <Review
+                  onChangeDB={onChangeDB}
+                  books={completed}
+                />
+              </Col>
+            </Row>
           </div>
           <Database
             progress={progress}

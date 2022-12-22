@@ -119,12 +119,24 @@ export default function AddBook({ onChangeDB }) {
   return (
     <div id="header">
       <h1>My Summaries</h1>
+
       <Button
         variant="dark"
         id="createBooks"
         onClick={handleShow}
+        className="d-none d-sm-block"
       >
         Add New Books
+      </Button>
+
+      <Button
+        variant="primary"
+        id="createBooksFloating"
+        onClick={handleShow}
+        size="lg"
+        className="d-block d-sm-none"
+      >
+        +
       </Button>
 
       <Modal

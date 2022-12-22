@@ -44,20 +44,24 @@ export default function Content({ book, bookID }) {
     setQuotes(newQuotes);
   }
 
-  return (
-    <div id="quotes-section">
-      <Button onClick={addNewHighlightBox}>Add New Highlight</Button>
-      {quotes.map((quote) => {
-        return (
-          <TextEditor
-            key={"editor-" + quote.id.toString()}
-            quotes={quotes}
-            quote={quote}
-            remove={removeFromDB}
-            add={saveToDB}
-          />
-        );
-      })}
-    </div>
-  );
+  if (quotes.length == 0) {
+    addNewHighlightBox();
+  } else {
+    return (
+      <div id="quotes-section">
+        <Button onClick={addNewHighlightBox}>Add New Highlight</Button>
+        {quotes.map((quote) => {
+          return (
+            <TextEditor
+              key={"editor-" + quote.id.toString()}
+              quotes={quotes}
+              quote={quote}
+              remove={removeFromDB}
+              add={saveToDB}
+            />
+          );
+        })}
+      </div>
+    );
+  }
 }

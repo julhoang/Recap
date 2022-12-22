@@ -6,21 +6,17 @@ import Home from "./components/Home";
 
 export default function App() {
   return (
-    <div>
-      <Main />
-    </div>
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={<Home />}
+        />
+        <Route
+          path="/editor"
+          element={<Editor />}
+        />
+      </Routes>
+    </>
   );
 }
-
-const Main = () => (
-  <Routes>
-    <Route
-      path="/"
-      element={<Home />}
-    />
-    <Route
-      path="/editor"
-      element={<Editor />}
-    />
-  </Routes>
-);

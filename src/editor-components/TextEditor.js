@@ -107,6 +107,7 @@ export default function TextEditor({ quotes, quote, add, remove }) {
         >
           Cancel
         </Button>
+        <hr class="solid d-block d-md-none"></hr>
         <Button
           variant="outline-danger"
           onClick={handleRemove}
